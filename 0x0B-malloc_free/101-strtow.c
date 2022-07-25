@@ -51,7 +51,7 @@ char **strtow(char *str)
 			n = 0;
 			while (str[n] != ' ')
 				n++;
-			strDup[i] = malloc(sizeof(char) * (1));
+			strDup[i] = malloc(sizeof(char) * (n + 3));
 			if (strDup[i] == NULL)
 			{
 				while (--i >= 0)
