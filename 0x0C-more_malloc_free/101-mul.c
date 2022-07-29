@@ -1,8 +1,5 @@
 #include "main.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
+#include<string.h>
 
 /**
  * _isdigit - checks if character is digit
