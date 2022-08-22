@@ -1,24 +1,43 @@
 #include <stdio.h>
+#include "mai.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <stdlib.h>
-#include "main.h"
-
 /**
- * main - check the code for Holberton School students.
- *
- * Return: Always 0.
+ * read_textfile - Reads a text file and prints it to the POSIX
+ * standard output.
+ * @filename: file.
+ * @letters: Number of letters it should read and print.
+ * Return: Actual number of letters it could read and print.
  */
-int main(int ac, char **av)
+ssize_t read_textfile(const char *filename, size_t letters)
 {
-  ssize_t n;
+	int fd, res_read, res_write;
+	char *buf;
 
-  if (ac != 2)
-    {
-      dprintf(2, "Usage: %s filename\n", av[0]);
-      exit(1);
-    }
-  n = read_textfile(av[1], 114);
-  printf("\n(printed chars: %li)\n", n);
-  n = read_textfile(av[1], 1024);
-  printf("\n(printed chars: %li)\n", n);
-  return (0);
+	if (filename == NULL)
+		return (0);
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	buf = malloc(sizeof(char) * letters);
+	if (buf == NULL)
+		return (0);
+	res_read = read(fd, buf, letters);
+	if (res_read == -1)
+	{
+		free(buf);
+		return (0);
+	}
+	res_write = write(STDOUT_FILENO, buf, res_read);
+	if (res_write == -1 || res_read != res_write)
+	{
+		free(buf);
+		return (0);
+	}
+	free(buf);
+	close(fd);
+	return (res_write);
 }
